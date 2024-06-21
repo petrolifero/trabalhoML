@@ -11,26 +11,25 @@ def preprocess_data(df):
     df = pd.get_dummies(df, drop_first=True)
     return df
 
-def readAllcsv(csv_files):
- dataframes = []
- for file in csv_files:
-     try:
-         # Tentar ler com codificação padrão UTF-8
-         df = pd.read_csv(file)
-     except UnicodeDecodeError:
-         try:
-             # Se falhar, tentar com ISO-8859-1
-             df = pd.read_csv(file, encoding='ISO-8859-1')
-         except Exception as e:
-             print(f"Erro ao ler o arquivo {file}: {e}")
-             continue
-     dataframes.append(df)
- return dataframes
-
+def read_all_csv(csv_files):
+    dataframes = []
+    for file in csv_files:
+        try:
+            # Tentar ler com codificação padrão UTF-8
+            df = pd.read_csv(file)
+        except UnicodeDecodeError:
+            try:
+                # Se falhar, tentar com ISO-8859-1
+                df = pd.read_csv(file, encoding='ISO-8859-1')
+            except Exception as e:
+                print(f"Erro ao ler o arquivo {file}: {e}")
+                continue
+        dataframes.append(df)
+    return dataframes
 
 csv_files = [file for file in os.listdir('.') if file.endswith('.csv')]
 
-dataframes=readAllcsv(csv_files)
+dataframes = read_all_csv(csv_files)
 
 # 3. Verificar quais arquivos têm dados faltantes e quantos valores estão faltando em cada arquivo
 for i, df in enumerate(dataframes):
@@ -63,7 +62,8 @@ for i, df in enumerate(dataframes):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
         # Verificar se as colunas são numéricas
-        if X_train.select_dtypes(include=[np.number]).shape[1] == X_train.shape[1]:
+        non_numeric_columns = X_train.select_dtypes(exclude=[np.number]).columns
+        if len(non_numeric_columns) == 0:
             # Criar e treinar o modelo
             clf = DecisionTreeClassifier()
             clf.fit(X_train, y_train)
@@ -75,6 +75,6 @@ for i, df in enumerate(dataframes):
             print(f"\nRelatório de classificação para o arquivo {csv_files[i]}:")
             print(classification_report(y_test, y_pred))
         else:
-            print(f"\nO arquivo {csv_files[i]} contém colunas não numéricas. Por favor, converta-as para numéricas antes de usar o modelo de árvore de decisão.")
+            print(f"\nO arquivo {csv_files[i]} contém colunas não numéricas: {non_numeric_columns.tolist()}. Por favor, converta-as para numéricas antes de usar o modelo de árvore de decisão.")
     else:
         print(f"\nO arquivo {csv_files[i]} não possui dados suficientes após a remoção de valores faltantes.")
