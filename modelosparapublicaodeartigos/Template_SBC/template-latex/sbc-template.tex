@@ -23,120 +23,47 @@
 \maketitle
 
 \begin{abstract}
-  This paper describes a comparison between decision's trees on the problem of determine \textit{default} on loans.
+  This paper model a decision's tree on the problem of determine \textit{default} on loans, the fundamental problem on any credit institution.
 \end{abstract}
      
 \begin{resumo} 
-  Este artigo descreve uma comparação entre árvores de decisão no problema de determinação de \textit{default} em empréstimos.
+  Este artigo modela uma árvore de decisão no problema de determinação de \textit{default} em empréstimos, o problema fundamental em qualquer instituição fornecedora de crédito.
   
 \end{resumo}
 
 
-\section{General Information}
+\section{Introdução}
 
-All full papers and posters (short papers) submitted to some SBC conference,
-including any supporting documents, should be written in English or in
-Portuguese. The format paper should be A4 with single column, 3.5 cm for upper
-margin, 2.5 cm for bottom margin and 3.0 cm for lateral margins, without
-headers or footers. The main font must be Times, 12 point nominal size, with 6
-points of space before each paragraph. Page numbers must be suppressed.
+Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que as pessoas ou instituições adimplentes suportem a perda das pessoas ou instituições inadimplentes. O custo minimo, dado um cohort especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados.
 
-Full papers must respect the page limits defined by the conference.
-Conferences that publish just abstracts ask for \textbf{one}-page texts.
+\section{Limpeza dos dados} \label{sec:firstpage}
 
-\section{First Page} \label{sec:firstpage}
+O dataset escolhido por esse artigo\cite{dataset} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de header que estava logicamente duplicada. Como é possivel constatar kaggle, essa linha possuia a mesma informação do header seguinte, porém com colunas chamadas X1, X2, etc. De posse do dicionario de dados que a pagina fornece, é possivel interpreta-lo, mas foi mais simples apenas não usa-lo em prol de legibilidade. Originalmente foram considerados para esse artigo outros 4 datasets, porém descartados na fase de limpeza, pois possuiam caracteristicas discriminatórias, como local de moradia, ou possuiam multiplas colunas nulas, a fim de contemplar os multiplos pagamentos ou a falta deles. Além disso os datasets descartados, que permanecem nos documentos fornecidos junto ao presente artigo, possuiam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o dataset atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de default e 5173 casos de adimplência.
 
-The first page must display the paper title, the name and address of the
-authors, the abstract in English and ``resumo'' in Portuguese (``resumos'' are
-required only for papers written in Portuguese). The title must be centered
-over the whole page, in 16 point boldface font and with 12 points of space
-before itself. Author names must be centered in 12 point font, bold, all of
-them disposed in the same line, separated by commas and with 12 points of
-space after the title. Addresses must be centered in 12 point font, also with
-12 points of space after the authors' names. E-mail addresses should be
-written using font Courier New, 10 point nominal size, with 6 points of space
-before and 6 points of space after.
+\section{Divisão treinamento}
 
-The abstract and ``resumo'' (if is the case) must be in 12 point Times font,
-indented 0.8cm on both sides. The word \textbf{Abstract} and \textbf{Resumo},
-should be written in boldface and must precede the text.
+A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é por padrão de 25\%, mas considerando um conjunto maior em comparação aos datasets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho.
 
-\section{CD-ROMs and Printed Proceedings}
-
-In some conferences, the papers are published on CD-ROM while only the
-abstract is published in the printed Proceedings. In this case, authors are
-invited to prepare two final versions of the paper. One, complete, to be
-published on the CD and the other, containing only the first page, with
-abstract and ``resumo'' (for papers in Portuguese).
-
-\section{Sections and Paragraphs}
-
-Section titles must be in boldface, 13pt, flush left. There should be an extra
-12 pt of space before each title. Section numbering is optional. The first
-paragraph of each section should not be indented, while the first lines of
-subsequent paragraphs should be indented by 1.27 cm.
-
-\subsection{Subsections}
-
-The subsection titles must be in boldface, 12pt, flush left.
-
-\section{Figures and Captions}\label{sec:figs}
-
-
-Figure and table captions should be centered if less than one line
-(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
-both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
-be Helvetica, 10 point, boldface, with 6 points of space before and after each
-caption.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.5\textwidth]{fig1.jpg}
-\caption{A typical figure}
-\label{fig:exampleFig1}
-\end{figure}
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.3\textwidth]{fig2.jpg}
-\caption{This figure is an example of a figure caption taking more than one
-  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
-\label{fig:exampleFig2}
-\end{figure}
-
-In tables, try to avoid the use of colored or shaded backgrounds, and avoid
-thick, doubled, or unnecessary framing lines. When reporting empirical data,
-do not use more decimal digits than warranted by their precision and
-reproducibility. Table caption must be placed before the table (see Table 1)
-and the font used must also be Helvetica, 10 point, boldface, with 6 points of
-space before and after each caption.
-
-\begin{table}[ht]
-\centering
-\caption{Variables to be considered on the evaluation of interaction
-  techniques}
-\label{tab:exTable1}
-\includegraphics[width=.7\textwidth]{table.jpg}
+\section{Avaliação de performance}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lcccc}
+		\hline
+		\textbf{Classe} & \textbf{Precisão} & \textbf{Revocação} & \textbf{F1-Score} & \textbf{Suporte} \\ \hline
+		0                & 0.83              & 0.80               & 0.81               & 5375              \\
+		1                & 0.37              & 0.41               & 0.39               & 1525              \\ \hline
+		\textbf{Precisão Média} & \multicolumn{4}{c}{0.60} \\
+		\textbf{Revocação Média} & \multicolumn{4}{c}{0.60} \\
+		\textbf{F1-Score Médio} & \multicolumn{4}{c}{0.60} \\
+		\textbf{Acurácia} & \multicolumn{4}{c}{0.71} \\
+		\textbf{Suporte Total} & \multicolumn{4}{c}{6900} \\ \hline
+	\end{tabular}
+	\caption{Relatório de classificação para o arquivo Loan-data-sem-primeira-linha-change-dependent-variable.csv}
+	\label{tab:class_report}
 \end{table}
 
-\section{Images}
-
-All images and illustrations should be in black-and-white, or gray tones,
-excepting for the papers that will be electronically available (on CD-ROMs,
-internet, etc.). The image resolution on paper should be about 600 dpi for
-black-and-white images, and 150-300 dpi for grayscale images.  Do not include
-images with excessive resolution, as they may take hours to print, without any
-visible difference in the result. 
-
-\section{References}
-
-Bibliographic references must be unambiguous and uniform.  We recommend giving
-the author names references in brackets, e.g. \cite{knuth:84},
-\cite{boulic:91}, and \cite{smith:99}.
-
-The references must be listed using 12 point font size, with 6 points of space
-before each reference. The first line of each reference should not be
-indented, while the subsequent should be indented by 0.5 cm.
+\section{Conclusão}
+Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um dataset com pouco desbalanço comparado a um dataset maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rapida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}

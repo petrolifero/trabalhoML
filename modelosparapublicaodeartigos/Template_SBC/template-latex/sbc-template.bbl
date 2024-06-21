@@ -1,20 +1,24 @@
 \begin{thebibliography}{}
 
-\bibitem[Boulic and Renault 1991]{boulic:91}
-Boulic, R. and Renault, O. (1991).
-\newblock 3d hierarchies for animation.
-\newblock In Magnenat-Thalmann, N. and Thalmann, D., editors, {\em New Trends
-  in Animation and Visualization}. John Wiley {\&} Sons ltd.
+\bibitem{investopedia}
+Investopedia. \textit{What Is Exposure at Default (EAD)? Meaning and How To Calculate}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://www.investopedia.com/terms/e/exposure_at_default.asp}
 
-\bibitem[Knuth 1984]{knuth:84}
-Knuth, D.~E. (1984).
-\newblock {\em The {\TeX} Book}.
-\newblock Addison-Wesley, 15th edition.
+\bibitem{kaggle}
+kaggle. \textit{Loan Data}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://www.kaggle.com/datasets/jakeshbohaju/loan-data}
 
-\bibitem[Smith and Jones 1999]{smith:99}
-Smith, A. and Jones, B. (1999).
-\newblock On the complexity of computing.
-\newblock In Smith-Jones, A.~B., editor, {\em Advances in Computer Science},
-  pages 555--566. Publishing Press.
+\bibitem{scikit}
+scikit-learn. \textit{scikit-learn}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://scikit-learn.org/stable/}
+
+\bibitem{pandas}
+pandas. \textit{pandas}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://pandas.pydata.org/}
+
+
+\bibitem{numpy}
+numpy. \textit{numpy}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://numpy.org/}
+
+
+\bibitem{dataset}
+dataset. \textit{dataset}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://www.kaggle.com/datasets/jakeshbohaju/loan-data}
+
 
 \end{thebibliography}
