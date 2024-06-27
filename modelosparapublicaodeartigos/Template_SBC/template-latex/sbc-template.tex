@@ -38,22 +38,23 @@ Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédit
 
 \section{Limpeza dos dados} \label{sec:firstpage}
 
-O dataset escolhido por esse artigo\cite{dataset} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de header que estava logicamente duplicada. Como é possivel constatar em kaggle\cite{kaggle}, essa linha possuia a mesma informação do header seguinte, porém com colunas chamadas X1, X2, etc. De posse do dicionario de dados que a pagina fornece, é possivel interpreta-lo, mas foi mais simples apenas não usa-lo em prol de legibilidade. Originalmente foram considerados para esse artigo outros 4 datasets, porém descartados na fase de limpeza, pois possuiam caracteristicas discriminatórias, como local de moradia, ou possuiam multiplas colunas nulas, a fim de contemplar os multiplos pagamentos ou a falta deles. Além disso os datasets descartados, que permanecem nos documentos fornecidos junto ao presente artigo, possuiam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o dataset atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de default e 5173 casos de adimplência.
+O dataset escolhido por esse artigo\cite{datasetM} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de header que estava logicamente duplicada e . Como é possível constatar em kaggle\cite{kaggle}, essa linha possuía a mesma informação do header seguinte, porém com colunas chamadas X1, X2, etc. De posse do dicionario de dados que a pagina fornece, é possivel interpreta-lo, mas foi mais simples apenas não usa-lo em prol de legibilidade. Originalmente foram considerados para esse artigo outros 4 datasets, porém foram descartados na fase de limpeza, pois possuíam características discriminatórias, como local de moradia, ou possuíam múltiplas colunas nulas, a fim de contemplar os múltiplos pagamentos ou a falta deles. Com múltiplas colunas iguais, elas não ofereciam ganho de informação. Além disso os datasets descartados, que permanecem nos documentos fornecidos junto ao presente artigo, possuíam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o dataset atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de default e 5173 casos de adimplência.
 
 \section{Divisão treinamento}
 
 A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é por padrão de 25\%, mas considerando um conjunto maior em comparação aos datasets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho.
 
 \section{Avaliação de performance}
+Executando de forma irrestrita (altura indefinida até cada nó folha só conter um tipo de \textit{loan\_status}) temos o seguinte resultado
 \begin{table}[h]
 	\centering
 	\begin{tabular}{lcccc}
 		\hline
-		\textbf{Classe} & \textbf{Precisão} & \textbf{Revocação} & \textbf{F1-Score} & \textbf{Suporte} \\ \hline
+		\textbf{Classe} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\ \hline
 		0                & 0.83              & 0.80               & 0.81               & 5375              \\
 		1                & 0.37              & 0.41               & 0.39               & 1525              \\ \hline
 		\textbf{Precisão Média} & \multicolumn{4}{c}{0.60} \\
-		\textbf{Revocação Média} & \multicolumn{4}{c}{0.60} \\
+		\textbf{Recall Médio} & \multicolumn{4}{c}{0.60} \\
 		\textbf{F1-Score Médio} & \multicolumn{4}{c}{0.60} \\
 		\textbf{Acurácia} & \multicolumn{4}{c}{0.71} \\
 		\textbf{Suporte Total} & \multicolumn{4}{c}{6900} \\ \hline
@@ -61,6 +62,25 @@ A divisão dos dados originais em treinamento e teste ficou dividido em 30\% par
 	\caption{Relatório de classificação para o arquivo Loan-data-sem-primeira-linha-change-dependent-variable.csv}
 	\label{tab:class_report}
 \end{table}
+
+Porém limitando a altura 10, que exige menos processamento, temos o seguinte
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lcccc}
+		\hline
+		\textbf{Classe} & \textbf{Precisão} & \textbf{REcall} & \textbf{F1-Score} & \textbf{Support} \\ \hline
+		0                & 0.84              & 0.92               & 0.88               & 5375              \\
+		1                & 0.59              & 0.40               & 0.47               & 1525              \\ \hline
+		\textbf{Acurácia} & \multicolumn{4}{c}{0.81} \\
+		\textbf{Média Macro} & 0.72 & 0.66 & 0.68 & 6900 \\
+		\textbf{Média Ponderada} & 0.79 & 0.81 & 0.79 & 6900 \\ \hline
+	\end{tabular}
+	\caption{Relatório de classificação para o arquivo Loan-data-sem-primeira-linha-change-dependent-variable.csv}
+	\label{tab:class_report}
+\end{table}
+
+As avaliações não mudaram apreciavelmente, mesmo tendo uma limitação severa de altura. Ou seja, as primeiras divisões da árvore fornecem uma boa explicação sem precisar de mais complexidade.
 
 \section{Conclusão}
 Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um dataset com pouco desbalanço comparado a um dataset maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rapida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta.

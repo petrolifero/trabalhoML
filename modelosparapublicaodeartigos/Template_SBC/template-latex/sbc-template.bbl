@@ -24,4 +24,9 @@ dataset. \textit{dataset}. Acesso em: 20 de junho de 2024. Disponível em: \url{
 \bibitem{repositorio}
 repositorio. \textit{repositorio}. Acesso em: 26 de junho de 2024. Disponível em: \url{https://github.com/petrolifero/trabalhoML}
 
+
+\bibitem{decision}
+Understanding the decision tree structure. \textit{Understanding the decision tree structure}. Acesso em: 26 de junho de 2024. Disponível em: \url{https://scikit-learn.org/stable/auto_examples/tree/plot_unveil_tree_structure.html#sphx-glr-auto-examples-tree-plot-unveil-tree-structure-py}
+
+
 \end{thebibliography}
