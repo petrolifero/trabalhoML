@@ -104,4 +104,4 @@ for i, df in enumerate(dataframes):
     # Mostrar relatório de classificação
     print(f"\nRelatório de classificação para o arquivo {csv_file}:")
     print(classification_report(y_test, y_pred))
-#    explain_decision_tree(clf)
+    explain_decision_tree(clf)
