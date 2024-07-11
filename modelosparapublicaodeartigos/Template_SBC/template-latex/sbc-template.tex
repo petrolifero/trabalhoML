@@ -35,15 +35,56 @@
 
 \section{Introdução}
 
-Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) de um empréstimo é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que os clientes adimplentes compensem a perda dos inadimplentes. A utilização de árvores de decisão buscando prever se, dado um cliente, o empréstimo, caso concedido, será pago é relevante pois essa família de modelos possui alta capacidade de explicação através dos nós da árvore, permitindo entender de forma pormenorizada o processo decisório do modelo. Com isso, especialistas humanos conseguem criticar o modelo com maior facilidade .O custo mínimo, dado um cohort especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados. Os dados para reprodução do artigo encontram-se em \cite{repositorio}. Para produzir a analise, instale as dependências que estão no arquivo requirements.txt e execute o main.py com python 3.
+Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) de um empréstimo é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que os clientes adimplentes compensem a perda dos inadimplentes. A utilização de árvores de decisão buscando prever se, dado um cliente, o empréstimo, caso concedido, será pago é relevante pois essa família de modelos possui alta capacidade de explicação através dos nós da árvore, permitindo entender de forma pormenorizada o processo decisório do modelo. Com isso, especialistas humanos conseguem criticar o modelo com maior facilidade .O custo mínimo, dado um grupo de clientes elegíveis a um empréstimo especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados. Os dados para reprodução do artigo encontram-se em \cite{repositorio}. Para produzir a analise, instale as dependências que estão no arquivo requirements.txt e execute o main.py com python 3.
 
 \section{Limpeza dos dados} \label{sec:firstpage}
 
-O data set escolhido por esse artigo\cite{dataset} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de header que estava logicamente duplicada e . Como é possível constatar em kaggle\cite{kaggle}, essa linha possuía a mesma informação do header seguinte, porém com colunas chamadas X1, X2, etc. De posse do dicionario de dados que a pagina fornece, é possível interpreta-lo, mas foi mais simples apenas não usa-lo em prol de legibilidade. Originalmente foram considerados para esse artigo outros 4 data sets, porém foram descartados na fase de limpeza, pois possuíam características discriminatórias, como local de moradia, ou possuíam múltiplas colunas nulas, a fim de contemplar os múltiplos pagamentos ou a falta deles. Com múltiplas colunas iguais, elas não ofereciam ganho de informação. Além disso os data sets descartados, que permanecem nos documentos fornecidos junto ao presente artigo, possuíam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o data set atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de default e 5173 casos de adimplência.
+O data set escolhido por esse artigo\cite{dataset} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de cabeçalho que estava logicamente duplicada. Como é possível constatar em kaggle\cite{kaggle}, essa linha possuía a mesma informação do cabeçalho na linha posterior, porém com colunas com nomes pouco descritivos como X1 e X2. De posse do dicionario de dados que a pagina fornece, é possível interpreta-lo da seguinte forma :
+
+\begin{itemize}
+    \item \textbf{X1}: Montante do crédito concedido (dólar): inclui tanto o crédito individual do consumidor quanto o crédito de sua família (suplementar).
+    \item \textbf{X2}: Gênero (1 = masculino; 2 = feminino).
+    \item \textbf{X3}: Educação (1 = pós-graduação; 2 = universidade; 3 = ensino médio; 4 = outros).
+    \item \textbf{X4}: Estado civil (1 = casado; 2 = solteiro; 3 = outros).
+    \item \textbf{X5}: Idade (anos).
+    \item \textbf{X6 - X11}: Histórico de pagamento passado. Rastreou-se os registros de pagamento mensais passados (de abril a setembro de 2005) como segue:
+    \begin{itemize}
+        \item \textbf{X6}: status do pagamento em setembro de 2005;
+        \item \textbf{X7}: status do pagamento em agosto de 2005; 
+        \item \textbf{X8}: status do pagamento em julho de 2005;
+        \item \textbf{X9}: status do pagamento em junho de 2005;
+        \item \textbf{X10}: status do pagamento em maio de 2005;
+        \item \textbf{X11}: status do pagamento em abril de 2005.
+    \end{itemize}
+    A escala de medição para o status do pagamento é: -1 = pagamento pontual; 1 = atraso de pagamento de um mês; 2 = atraso de pagamento de dois meses; \dots; 8 = atraso de pagamento de oito meses; 9 = atraso de pagamento de nove meses ou mais.
+    
+    \item \textbf{X12 - X17}: Montante da fatura (dólar NT).
+    \begin{itemize}
+        \item \textbf{X12}: montante da fatura em setembro de 2005;
+        \item \textbf{X13}: montante da fatura em agosto de 2005;
+        \item \textbf{X14}: montante da fatura em julho de 2005;
+        \item \textbf{X15}: montante da fatura em junho de 2005;
+        \item \textbf{X16}: montante da fatura em maio de 2005;
+        \item \textbf{X17}: montante da fatura em abril de 2005.
+    \end{itemize}
+
+    \item \textbf{X18 - X23}: Montante do pagamento anterior (dólar NT).
+    \begin{itemize}
+        \item \textbf{X18}: montante pago em setembro de 2005;
+        \item \textbf{X19}: montante pago em agosto de 2005;
+        \item \textbf{X20}: montante pago em julho de 2005;
+        \item \textbf{X21}: montante pago em junho de 2005;
+        \item \textbf{X22}: montante pago em maio de 2005;
+        \item \textbf{X23}: montante pago em abril de 2005.
+    \end{itemize}
+    \item loan\_status: status de inadimplência, 0 para adimplente e 1 para inadimplente
+\end{itemize}
+
+Originalmente foram considerados para esse artigo outros 4 data sets, porém foram descartados na fase de limpeza, pois possuíam características discriminatórias, como local de moradia, ou possuíam múltiplas colunas nulas, a fim de contemplar os múltiplos pagamentos ou a falta deles. Com múltiplas colunas iguais, elas não ofereciam ganho de informação. Além disso os data sets descartados, que permanecem nos documentos fornecidos em \cite{repositorio}, possuíam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o data set atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de inadimplência e 5173 casos de adimplência.
 
 \section{Divisão treinamento}
 
-A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é por padrão de 25\%, mas considerando um conjunto maior em comparação aos data sets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho.
+A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é de 25\%, mas considerando um conjunto maior em comparação aos data sets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho da amostra.
 
 \section{Avaliação de performance}
 \subsection{Explicação das métricas usadas}
@@ -87,7 +128,7 @@ Executando de forma irrestrita (altura indefinida até cada nó folha só conter
 	\label{tab:class_report}
 \end{table}
 
-Porém limitando a altura 10, que exige menos processamento, temos o seguinte
+Porém limitando a altura da árvore gerada a 10, que exige menos processamento, temos o seguinte
 
 \begin{table}[h]
 	\centering
@@ -104,7 +145,42 @@ Porém limitando a altura 10, que exige menos processamento, temos o seguinte
 	\label{tab:class_report}
 \end{table}
 
-As avaliações não mudaram apreciavelmente, mesmo tendo uma limitação severa de altura. Ou seja, as primeiras divisões da árvore fornecem uma boa explicação sem precisar de mais complexidade.
+As avaliações não mudaram apreciavelmente entre as duas escolhas de altura, mesmo tendo uma limitação severa de altura. Ou seja, as primeiras divisões da árvore fornecem uma boa explicação sem precisar de mais complexidade.
+
+\section{Configuração da Árvore escolhida para o classificador}
+Os classificadores utilizados selecionam os nós a partir da melhor impureza de gini, O número mínimo de amostras para realizar um split são 2 amostras, então os nós internos sempre se abrem em sub-árvores.
+
+A impureza de gini é dada por \[
+G(t) = 1 - \sum_{i=1}^{C} p_i^2
+\]
+
+onde:
+\begin{itemize}
+    \item \( G(t) \) é a impureza de Gini do nó \( t \).
+    \item \( C \) é o número total de classes.
+    \item \( p_i \) é a proporção de exemplos da classe \( i \) no nó \( t \).
+\end{itemize}
+
+O classificador vai buscar minimizar a impureza do nó que esta escolhendo, o que busca nós mais homogêneos. Sabendo que as árvores de decisão repartem o espaço amostral, usar a impureza de gini significa particionar de maneira a isolar as amostras com classes mais dominantes, ou seja, buscar nós mais puros. Uma limitação que não impactou o presente trabalho é que a impureza de gini só se aplica a alvos categóricos e não contínuos. Como a variável que queremos prever é loan\_status, que pode assumir apenas 2 valores, esse critério satisfaz além de ser mais eficiente segundo \cite{giniImpurity}
+
+\section{Cross-validation}
+Foi realizado cross-validation no classificador com score calculado como a acurácia média entre o label do dado e o label gerado pelo classificador. O algoritmo utilizado em cada classificador foi o K-fold Usando 20 folds. Os resultados da media da acuracia entre os folds foram, para arvores restritas a altura 10 e a altura 100 os seguintes:
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Altura da Árvore & Média & Desvio Padrão \\
+        \hline
+        10 & 0.7977726945926514 & 0.017603520474821492 \\
+        100 & 0.7079005940893783 & 0.02703629602154086 \\
+        \hline
+    \end{tabular}
+    \caption{Médias e desvios padrões entre 20 folds da acuracia media para árvores de decisão com alturas de 10 e 100}
+    \label{tab:decision_tree_statistics}
+\end{table}
+
+\section{Discussão ética e ambiental}
+Os algoritmos de aprendizado de máquina impactam a vida em sociedade por pelo menos duas vias : minimizando ou reforçando as relações de desigualdade social e utilizando recursos do planeta para seu treinamento e execução. Com relação a desigualdade, o uso de árvores possui capacidade explicativa dos resultados do modelo, permitindo contestação caso tenha sido entendido como injusto. Essa capacidade é maior do que em redes neurais por exemplo, pois nestas o conhecimento esta codificado nos pesos da rede. Com relação a utilização de recursos, mesmo um modelo maior de árvore é executado rapidamente e dispondo de poucos recursos para o treinamento, embora por padrão sejam modelos que não foram projetados para atualização incremental, logo com novos dados deve-se recriar o modelo toda vez. Contrapondo-se novamente as redes neurais, nestas ocorre o oposto : treinamentos custosos porém admitindo-se que o resultado do modelo (os pesos) sejam usados em face de novos dados para gerar novos pesos, sem ter de re-treinar com todos os dados.
 
 \section{Conclusão}
 Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um data set com pouco desbalanço comparado a um data set maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rápida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta. Futuros trabalhos devem avaliar a sensibilidade das métricas à altura máxima, para fins de comparação da maxima eficiência energética com menos danos ambientais.
