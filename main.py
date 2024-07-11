@@ -4,6 +4,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_score
+
+
 
 def explain_decision_tree(clf):
     n_nodes = clf.tree_.node_count
@@ -99,5 +102,7 @@ for i, df in enumerate(dataframes):
     print(f"\nRelatório de classificação para o arquivo {csv_file}:")
     print(classification_report(y_test, y_pred))
     print(classification_report(y_test, y_pred2))
-#    explain_decision_tree(clf)
-#    explain_decision_tree(clf2)
+    scores = cross_val_score(clf, X, y, cv=20)
+    scores2 = cross_val_score(clf2, X, y, cv=20)
+    print(scores.mean(),scores.std())
+    print(scores2.mean(),scores2.std())
