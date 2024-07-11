@@ -34,15 +34,15 @@
 
 \section{Introdução}
 
-Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que as pessoas ou instituições adimplentes suportem a perda das pessoas ou instituições inadimplentes. O custo minimo, dado um cohort especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados. Os dados para reprodução do artigo encontram-se em \cite{repositorio}. Para produzir a analise, instale as dependências que estão no arquivo requirements.txt e execute o main.py com python 3.
+Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) de um empréstimo é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que as pessoas ou instituições adimplentes suportem a perda das pessoas ou instituições inadimplentes. O custo minimo, dado um cohort especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados. Os dados para reprodução do artigo encontram-se em \cite{repositorio}. Para produzir a analise, instale as dependências que estão no arquivo requirements.txt e execute o main.py com python 3.
 
 \section{Limpeza dos dados} \label{sec:firstpage}
 
-O dataset escolhido por esse artigo\cite{dataset} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de header que estava logicamente duplicada e . Como é possível constatar em kaggle\cite{kaggle}, essa linha possuía a mesma informação do header seguinte, porém com colunas chamadas X1, X2, etc. De posse do dicionario de dados que a pagina fornece, é possivel interpreta-lo, mas foi mais simples apenas não usa-lo em prol de legibilidade. Originalmente foram considerados para esse artigo outros 4 datasets, porém foram descartados na fase de limpeza, pois possuíam características discriminatórias, como local de moradia, ou possuíam múltiplas colunas nulas, a fim de contemplar os múltiplos pagamentos ou a falta deles. Com múltiplas colunas iguais, elas não ofereciam ganho de informação. Além disso os datasets descartados, que permanecem nos documentos fornecidos junto ao presente artigo, possuíam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o dataset atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de default e 5173 casos de adimplência.
+O data set escolhido por esse artigo\cite{dataset} necessitou de uma fase de limpeza bem curta, removendo do csv uma primeira linha de header que estava logicamente duplicada e . Como é possível constatar em kaggle\cite{kaggle}, essa linha possuía a mesma informação do header seguinte, porém com colunas chamadas X1, X2, etc. De posse do dicionario de dados que a pagina fornece, é possível interpreta-lo, mas foi mais simples apenas não usa-lo em prol de legibilidade. Originalmente foram considerados para esse artigo outros 4 data sets, porém foram descartados na fase de limpeza, pois possuíam características discriminatórias, como local de moradia, ou possuíam múltiplas colunas nulas, a fim de contemplar os múltiplos pagamentos ou a falta deles. Com múltiplas colunas iguais, elas não ofereciam ganho de informação. Além disso os data sets descartados, que permanecem nos documentos fornecidos junto ao presente artigo, possuíam uma cardinalidade muito menor que o escolhido. Como o modelo deve ser capaz de ser explicado para quem tiver seu crédito negado, além de atender a restrições legais e éticas, o data set atual foi finalmente escolhido. A divisão entre as classes é de 17826 casos de default e 5173 casos de adimplência.
 
 \section{Divisão treinamento}
 
-A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é por padrão de 25\%, mas considerando um conjunto maior em comparação aos datasets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho.
+A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é por padrão de 25\%, mas considerando um conjunto maior em comparação aos data sets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho.
 
 \section{Avaliação de performance}
 Executando de forma irrestrita (altura indefinida até cada nó folha só conter um tipo de \textit{loan\_status}) temos o seguinte resultado
@@ -69,7 +69,7 @@ Porém limitando a altura 10, que exige menos processamento, temos o seguinte
 	\centering
 	\begin{tabular}{lcccc}
 		\hline
-		\textbf{Classe} & \textbf{Precisão} & \textbf{REcall} & \textbf{F1-Score} & \textbf{Support} \\ \hline
+		\textbf{Classe} & \textbf{Precisão} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\ \hline
 		0                & 0.84              & 0.92               & 0.88               & 5375              \\
 		1                & 0.59              & 0.40               & 0.47               & 1525              \\ \hline
 		\textbf{Acurácia} & \multicolumn{4}{c}{0.81} \\
@@ -83,7 +83,7 @@ Porém limitando a altura 10, que exige menos processamento, temos o seguinte
 As avaliações não mudaram apreciavelmente, mesmo tendo uma limitação severa de altura. Ou seja, as primeiras divisões da árvore fornecem uma boa explicação sem precisar de mais complexidade.
 
 \section{Conclusão}
-Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um dataset com pouco desbalanço comparado a um dataset maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rapida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta.
+Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um data set com pouco desbalanço comparado a um data set maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rápida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}

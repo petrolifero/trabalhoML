@@ -1,32 +1,3 @@
 \begin{thebibliography}{}
 
-\bibitem{investopedia}
-Investopedia. \textit{What Is Exposure at Default (EAD)? Meaning and How To Calculate}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://www.investopedia.com/terms/e/exposure_at_default.asp}
-
-\bibitem{kaggle}
-kaggle. \textit{Loan Data}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://www.kaggle.com/datasets/jakeshbohaju/loan-data}
-
-\bibitem{scikit}
-scikit-learn. \textit{scikit-learn}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://scikit-learn.org/stable/}
-
-\bibitem{pandas}
-pandas. \textit{pandas}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://pandas.pydata.org/}
-
-
-\bibitem{numpy}
-numpy. \textit{numpy}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://numpy.org/}
-
-
-\bibitem{dataset}
-dataset. \textit{dataset}. Acesso em: 20 de junho de 2024. Disponível em: \url{https://www.kaggle.com/datasets/jakeshbohaju/loan-data}
-
-
-\bibitem{repositorio}
-repositorio. \textit{repositorio}. Acesso em: 26 de junho de 2024. Disponível em: \url{https://github.com/petrolifero/trabalhoML}
-
-
-\bibitem{decision}
-Understanding the decision tree structure. \textit{Understanding the decision tree structure}. Acesso em: 26 de junho de 2024. Disponível em: \url{https://scikit-learn.org/stable/auto_examples/tree/plot_unveil_tree_structure.html#sphx-glr-auto-examples-tree-plot-unveil-tree-structure-py}
-
-
 \end{thebibliography}
