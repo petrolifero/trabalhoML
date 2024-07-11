@@ -5,7 +5,7 @@
 \usepackage{graphicx,url}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel} 
-
+\usepackage{amsmath}
      
 \sloppy
 
@@ -47,6 +47,27 @@ A divisão dos dados originais em treinamento e teste ficou dividido em 30\% par
 
 \section{Avaliação de performance}
 \subsection{Explicação das métricas usadas}
+Segundo \cite{powers2011evaluation}, temos as seguintes métricas comumente utilizadas em aprendizado de maquina : Precisão, Recall, F1-Score e Support. Estas sendo definidas dependendo da relação entre classes previstas e classes reais do treino. Essas relações são Verdadeiro Positivo (quando o modelo prevê corretamente a classe positiva), Falso Positivo (quando o modelo prevê a classe positiva, mas a classe real é negativa), Verdadeiro Negativo (quando o modelo prevê corretamente a classe negativa) e Falso Negativo (quando o modelo prevê a classe negativa, mas a classe real é positiva). As relações são as que seguem :
+\subsection*{Precisão}
+\[
+\text{Precisão} = \frac{\text{VP}}{\text{VP} + \text{FP}}
+\]
+
+\subsection*{Recall}
+\[
+\text{Recall} = \frac{\text{VP}}{\text{VP} + \text{FN}}
+\]
+
+\subsection*{F1-Score}
+\[
+F1 = 2 \times \frac{\text{Precisão} \times \text{Recall}}{\text{Precisão} + \text{Recall}}
+\]
+
+\subsection*{Suporte}
+O suporte é o número de ocorrências reais de cada classe no conjunto de dados.
+\[
+\text{Suporte} = \text{Número total de exemplos em cada classe}
+\]
 \subsection{Resultado observado das métricas}
 Executando de forma irrestrita (altura indefinida até cada nó folha só conter um tipo de \textit{loan\_status}) temos o seguinte resultado
 \begin{table}[h]
@@ -86,8 +107,7 @@ Porém limitando a altura 10, que exige menos processamento, temos o seguinte
 As avaliações não mudaram apreciavelmente, mesmo tendo uma limitação severa de altura. Ou seja, as primeiras divisões da árvore fornecem uma boa explicação sem precisar de mais complexidade.
 
 \section{Conclusão}
-Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um data set com pouco desbalanço comparado a um data set maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rápida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta.
-
+Arvore de decisão é uma escolha apropriada para estimar problemas que precisem de explicação concreta e não abstrata, porém mesmo com um data set com pouco desbalanço comparado a um data set maior, ainda oferece uma performance relativamente ruim com os parâmetros utilizados. A avaliação foi extremamente rápida, então o trade-off entre performance e baixo custo de operação, seja energético ou ambiental, deve ser levado em conta. Futuros trabalhos devem avaliar a sensibilidade das métricas à altura máxima, para fins de comparação da maxima eficiência energética com menos danos ambientais.
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
 
