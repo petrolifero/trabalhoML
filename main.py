@@ -5,12 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 
-# Função para converter colunas categóricas em numéricas
-def preprocess_data(df):
-    # Converter colunas categóricas usando one-hot encoding
-    df = pd.get_dummies(df, drop_first=True)
-    return df
-
 def explain_decision_tree(clf):
     n_nodes = clf.tree_.node_count
     children_left = clf.tree_.children_left
@@ -90,18 +84,20 @@ for i, df in enumerate(dataframes):
     X = df.drop(target, axis=1)
     y = df[target]
 
-    # Pré-processar os dados
-    X = preprocess_data(X)
-
     # Dividir os dados em conjuntos de treino e teste
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
     # Criar e treinar o modelo
     clf = DecisionTreeClassifier(max_depth=10)
+    clf2 = DecisionTreeClassifier(max_depth=100)
     clf.fit(X_train, y_train)
+    clf2.fit(X_train, y_train)
     # Prever no conjunto de teste
     y_pred = clf.predict(X_test)
+    y_pred2 = clf2.predict(X_test)
     # Mostrar relatório de classificação
     print(f"\nRelatório de classificação para o arquivo {csv_file}:")
     print(classification_report(y_test, y_pred))
-    explain_decision_tree(clf)
+    print(classification_report(y_test, y_pred2))
+#    explain_decision_tree(clf)
+#    explain_decision_tree(clf2)

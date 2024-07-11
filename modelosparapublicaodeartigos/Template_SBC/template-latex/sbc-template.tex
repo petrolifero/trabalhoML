@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{sbc-template}
+\usepackage{cite}
 \usepackage{graphicx,url}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel} 
@@ -34,7 +35,7 @@
 
 \section{Introdução}
 
-Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) de um empréstimo é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que as pessoas ou instituições adimplentes suportem a perda das pessoas ou instituições inadimplentes. O custo minimo, dado um cohort especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados. Os dados para reprodução do artigo encontram-se em \cite{repositorio}. Para produzir a analise, instale as dependências que estão no arquivo requirements.txt e execute o main.py com python 3.
+Dentro do mercado de crédito, protagonizado por Bancos, cooperativas de crédito e demais instituições financeiras, a determinação do risco de inadimplência (i.e. \textit{default}) de um empréstimo é crucial pois desse risco advém toda a decisão de conceder crédito, e caso conceda, a qual custo deve ser fornecido, de forma que os clientes adimplentes compensem a perda dos inadimplentes. A utilização de árvores de decisão buscando prever se, dado um cliente, o empréstimo, caso concedido, será pago é relevante pois essa família de modelos possui alta capacidade de explicação através dos nós da árvore, permitindo entender de forma pormenorizada o processo decisório do modelo. Com isso, especialistas humanos conseguem criticar o modelo com maior facilidade .O custo mínimo, dado um cohort especifico, que deve ser acrescido ao custo dos adimplentes, é dado, segundo \cite{investopedia}, EAD x PD x LGD = Expected Loss. Este artigo relata a utilização de um conjunto de 22999 registros de empréstimos disponível publicamente em \cite{kaggle} para treinar uma arvore de decisão usando \cite{scikit}, \cite{pandas} e \cite{numpy} para tratamento dos dados. Os dados para reprodução do artigo encontram-se em \cite{repositorio}. Para produzir a analise, instale as dependências que estão no arquivo requirements.txt e execute o main.py com python 3.
 
 \section{Limpeza dos dados} \label{sec:firstpage}
 
@@ -45,6 +46,8 @@ O data set escolhido por esse artigo\cite{dataset} necessitou de uma fase de lim
 A divisão dos dados originais em treinamento e teste ficou dividido em 30\% para testes e 70\% para treino. A divisão entre teste e treino obedece a divisão padrão do scikit, que é por padrão de 25\%, mas considerando um conjunto maior em comparação aos data sets descartados, foi fornecido um pouco mais aos testes, para aproveitar o tamanho.
 
 \section{Avaliação de performance}
+\subsection{Explicação das métricas usadas}
+\subsection{Resultado observado das métricas}
 Executando de forma irrestrita (altura indefinida até cada nó folha só conter um tipo de \textit{loan\_status}) temos o seguinte resultado
 \begin{table}[h]
 	\centering
